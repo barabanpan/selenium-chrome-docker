@@ -80,41 +80,10 @@ class RozetkaBot:
         sleep(3)
 
     def add_to_compare_and_click(self, first_n):
-        # for i in range(1, first_n + 1):
-        el = self.driver.find_element_by_xpath('//li[contains(@class, "catalog-grid")][1]')
-        btn = el.find_element_by_xpath('.//button[contains(@class,"compare-button")]')
-        self.driver.execute_script("arguments[0].click();", btn)
+        for i in range(1, first_n + 1):
+            el = self.driver.find_element_by_xpath(f'//li[contains(@class, "catalog-grid")][{i}]')
+            el.find_element_by_xpath('.//button[contains(@class,"compare-button")]').click()
 
-        """el = self.find('//button[contains(@class,"compare-button")][1]')
-        el.click()
-        el = self.find('//button[contains(@class,"compare-button")][2]')
-        el.click()
-        el = self.find('//button[contains(@class,"compare-button")][3]')
-        el.click()
-        el = self.find('//button[contains(@class,"compare-button")][4]')
-        el.click()
-        el = self.find('//button[contains(@class,"compare-button")][5]')
-        el.click()"""
-
-        #self.driver.execute_script("arguments[0].click();", el)
-
-        # self.find('//button/svg/use[contains(@href,"compare")]').click()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        self.find('//button[contains(@aria-label, "Списки")]').click()
+        self.find('//a[contains(@class, "comparison")]').click()
+        self.find('//button[contains(text(),"відмінності")]').click()
