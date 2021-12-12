@@ -6,16 +6,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 
-from bot.driver.driver import local_driver #, docker_driver
-from bot.constants import DOCKER_DRIVER, LOCAL_DRIVER, TIMEOUT
+from bot.constants import REMOTE_DRIVER, LOCAL_DRIVER, TIMEOUT
 
 
 class RozetkaBot:
     def __init__(self, driver_type=LOCAL_DRIVER):
-        if driver_type == DOCKER_DRIVER:
-            # self.driver = docker_driver
+        if driver_type == REMOTE_DRIVER:
+            from bot.driver.remote_driver import remote_driver
+            self.driver = remote_driver
             pass
         else:
+            from bot.driver.local_driver import local_driver
             self.driver = local_driver
         self.timeout = TIMEOUT
 
@@ -44,7 +45,10 @@ class RozetkaBot:
             logger.info(f"Logged in as {login} after captcha")
 
     def open_phones(self):
-        # how to do that properly???
+        # self.find('//button[@id="fat-menu"]').click()
+        # self.find('//a[contains(@href, "c4627949")]').click()
+        # doesn't work :(
+        # self.find('//a[contains(@href, "c80003")]').click()
         self.driver.get('https://rozetka.com.ua/ua/mobile-phones/c80003/preset=smartfon/')
 
     def check_boxes(self):
@@ -64,7 +68,6 @@ class RozetkaBot:
         # processor
         self.find('//label[contains(@for, "Qualcomm")]').click()
         # price
-        # clean?
         self.find('//input[@formcontrolname="min"]').clear()
         self.find('//input[@formcontrolname="min"]').send_keys(10000)
         self.find('//input[@formcontrolname="max"]').clear()
@@ -76,10 +79,26 @@ class RozetkaBot:
         self.find('//select/option[text()=" Новинки "]').click()
         sleep(3)
 
-    def add_to_compare(self):
-        # it doesn't work! :(
-        self.find('//ul[contains(@class, "catalog")]/li[1]')
+    def add_to_compare_and_click(self, first_n):
+        # for i in range(1, first_n + 1):
+        el = self.driver.find_element_by_xpath('//li[contains(@class, "catalog-grid")][1]')
+        btn = el.find_element_by_xpath('.//button[contains(@class,"compare-button")]')
+        self.driver.execute_script("arguments[0].click();", btn)
 
+        """el = self.find('//button[contains(@class,"compare-button")][1]')
+        el.click()
+        el = self.find('//button[contains(@class,"compare-button")][2]')
+        el.click()
+        el = self.find('//button[contains(@class,"compare-button")][3]')
+        el.click()
+        el = self.find('//button[contains(@class,"compare-button")][4]')
+        el.click()
+        el = self.find('//button[contains(@class,"compare-button")][5]')
+        el.click()"""
+
+        #self.driver.execute_script("arguments[0].click();", el)
+
+        # self.find('//button/svg/use[contains(@href,"compare")]').click()
 
 
 
