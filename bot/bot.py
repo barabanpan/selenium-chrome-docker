@@ -50,40 +50,50 @@ class RozetkaBot:
         # doesn't work :(
         # self.find('//a[contains(@href, "c80003")]').click()
         self.driver.get('https://rozetka.com.ua/ua/mobile-phones/c80003/preset=smartfon/')
+        logger.info("Opened smartphones")
 
     def check_boxes(self):
         # brand
         self.find('//label[@for="OnePlus"]').click()
         self.find('//label[@for="Samsung"]').click()
         self.find('//label[@for="Xiaomi"]').click()
+        logger.info("Sorted by brands")
         # ram
         self.find('//label[@for="8 ГБ"]').click()
         self.find('//label[@for="12 ГБ"]').click()
+        logger.info("Sorted by RAM")
         # memory
         self.find('//label[@for="128 ГБ"]').click()
         self.find('//label[@for="256 ГБ"]').click()
+        logger.info("Sorted by memory")
         # screen
         self.find('//label[contains(@for, "6.49")]').click()
         self.find('//label[contains(@for, "6.5")]').click()
+        logger.info("Sorted by screen size")
         # processor
         self.find('//label[contains(@for, "Qualcomm")]').click()
+        logger.info("Sorted by processor")
         # price
         self.find('//input[@formcontrolname="min"]').clear()
         self.find('//input[@formcontrolname="min"]').send_keys(10000)
         self.find('//input[@formcontrolname="max"]').clear()
         self.find('//input[@formcontrolname="max"]').send_keys(20000)
         self.find('//button[text()=" Ok "]').click()
+        logger.info("Sorted by price")
 
     def sort(self):
         self.find('//select').click()
         self.find('//select/option[text()=" Новинки "]').click()
         sleep(3)
+        logger.info("Sorted by 'Новинки'")
 
     def add_to_compare_and_click(self, first_n):
         for i in range(1, first_n + 1):
             el = self.driver.find_element_by_xpath(f'//li[contains(@class, "catalog-grid")][{i}]')
             el.find_element_by_xpath('.//button[contains(@class,"compare-button")]').click()
+        logger.info("Added to compare")
 
         self.find('//button[contains(@aria-label, "Списки")]').click()
         self.find('//a[contains(@class, "comparison")]').click()
         self.find('//button[contains(text(),"відмінності")]').click()
+        logger.info("Chose only differences")

@@ -12,13 +12,14 @@ if __name__ == "__main__":
         logger.error(f"You first argument must be either '{REMOTE_DRIVER}' or '{LOCAL_DRIVER}'! Aborted.")
     else:
         r_bot = ""
+        print("sys.argv[1] =", sys.argv[1])
         try:
             r_bot = RozetkaBot(driver_type=sys.argv[1])
             r_bot.driver.get("https://rozetka.com.ua/ua/")
             # r_bot.auth(login, password)  # captcha :(
             r_bot.open_phones()
-            r_bot.check_boxes()
-            r_bot.sort()
+            #r_bot.check_boxes()
+            #r_bot.sort()
             r_bot.add_to_compare_and_click(first_n=FIRST_N_PHONES)
         except Exception as e:
             logger.error(repr(e))
