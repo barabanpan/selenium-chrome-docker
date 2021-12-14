@@ -5,24 +5,23 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import Select
 
-from bot.constants import REMOTE_DRIVER, LOCAL_DRIVER, TIMEOUT
+from bot.constants import TIMEOUT
+from bot.driver.driver import get_driver
 
 
 class RozetkaBot:
-    def __init__(self, driver_type=LOCAL_DRIVER):
-        if driver_type == REMOTE_DRIVER:
-            from bot.driver.remote_driver import remote_driver
-            self.driver = remote_driver
-            pass
-        else:
-            from bot.driver.local_driver import local_driver
-            self.driver = local_driver
+    def __init__(self, driver_type):
+        self.driver = get_driver(driver_type)
         self.timeout = TIMEOUT
 
     def find(self, xpath):
         sleep(0.5)
         return WebDriverWait(self.driver, self.timeout).until(EC.visibility_of_element_located((By.XPATH, xpath)))
+
+    def find_click(self, xpath):
+        return WebDriverWait(self.driver, self.timeout).until(EC.element_to_be_clickable((By.XPATH, xpath)))
 
     def find_all(self, xpath):
         sleep(0.5)
@@ -82,15 +81,19 @@ class RozetkaBot:
         logger.info("Sorted by price")
 
     def sort(self):
-        self.find('//select').click()
-        self.find('//select/option[text()=" Новинки "]').click()
-        sleep(3)
+        Select(self.find('//select')).select_by_visible_text('Новинки')
+        sleep(30)
         logger.info("Sorted by 'Новинки'")
 
     def add_to_compare_and_click(self, first_n):
-        for i in range(1, first_n + 1):
-            el = self.driver.find_element_by_xpath(f'//li[contains(@class, "catalog-grid")][{i}]')
+        # why doesn't it work???
+        elems = self.find_all(f'//li[contains(@class, "catalog-grid") and position()<={first_n}]')
+        for el in elems:
             el.find_element_by_xpath('.//button[contains(@class,"compare-button")]').click()
+        # for i in range(1, first_n + 1):
+            # el = self.find_click(f'//li[contains(@class, "catalog-grid")][{i}]')
+            # el.find_element_by_xpath('.//button[contains(@class,"compare-button")]').click()
+
         logger.info("Added to compare")
 
         self.find('//button[contains(@aria-label, "Списки")]').click()
