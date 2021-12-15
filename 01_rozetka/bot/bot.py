@@ -36,12 +36,12 @@ class RozetkaBot:
             self.find('//div[contains(@class,"recaptcha-checkbox")]')
         except TimeoutException:
             # can't check if indeed logged in
-            logger.info(f"Logged in as {login}")
+            logger.debug(f"Logged in as {login}")
         else:
             self.find('//div[contains(@class,"recaptcha-checkbox")]').click()
             self.find('//button[contains(@class, "auth-modal__submit")]').click()
             # can't check if indeed logged in
-            logger.info(f"Logged in as {login} after captcha")
+            logger.debug(f"Logged in as {login} after captcha")
 
     def open_phones(self):
         # self.find('//button[@id="fat-menu"]').click()
@@ -49,64 +49,56 @@ class RozetkaBot:
         # doesn't work :(
         # self.find('//a[contains(@href, "c80003")]').click()
         self.driver.get('https://rozetka.com.ua/ua/mobile-phones/c80003/preset=smartfon/')
-        logger.info("Opened smartphones")
+        logger.debug("Opened smartphones")
 
     def check_boxes(self):
         # brand
         self.find('//label[@for="OnePlus"]').click()
         self.find('//label[@for="Samsung"]').click()
         self.find('//label[@for="Xiaomi"]').click()
-        logger.info("Sorted by brands")
+        logger.debug("Sorted by brands")
         # ram
         self.find('//label[@for="8 ГБ"]').click()
         self.find('//label[@for="12 ГБ"]').click()
-        logger.info("Sorted by RAM")
+        logger.debug("Sorted by RAM")
         # memory
         self.find('//label[@for="128 ГБ"]').click()
         self.find('//label[@for="256 ГБ"]').click()
-        logger.info("Sorted by memory")
+        logger.debug("Sorted by memory")
         # screen
         self.find('//label[contains(@for, "6.49")]').click()
         self.find('//label[contains(@for, "6.5")]').click()
-        logger.info("Sorted by screen size")
+        logger.debug("Sorted by screen size")
         # processor
         self.find('//label[contains(@for, "Qualcomm")]').click()
-        logger.info("Sorted by processor")
+        logger.debug("Sorted by processor")
         # price
         self.find('//input[@formcontrolname="min"]').clear()
         self.find('//input[@formcontrolname="min"]').send_keys(10000)
         self.find('//input[@formcontrolname="max"]').clear()
         self.find('//input[@formcontrolname="max"]').send_keys(20000)
         self.find('//button[text()=" Ok "]').click()
-        logger.info("Sorted by price")
+        logger.debug("Sorted by price")
 
     def sort(self):
         Select(self.find('//select')).select_by_visible_text('Новинки')
         # sleep(5)
-        logger.info("Sorted by 'Новинки'")
+        logger.debug("Sorted by 'Новинки'")
 
     def add_to_compare_and_click(self, first_n):
         # why doesn't it work???
-        elems = self.find_all(f'//li[contains(@class, "catalog-grid") and position()<={first_n}]')
-        for phone in elems:
-            sleep(0.5)
-            phone.find_element(
-                By.XPATH,
-                './/app-compare-button//button'
-            ).click()
-
-        # for el in elems:
-        #    btn = el.find_element_by_xpath('.//button[contains(@class,"compare-button")]')  # .click()
-        #    btn.click();
-        #    #self.driver.execute_script('arguments[0].click();', btn)
+        elements = self.find_all(f'//li[contains(@class, "catalog-grid") and position()<={first_n}]')
+        for el in elements:
+            el.find_element_by_xpath('.//button[contains(@class,"compare-button")]').click()
+            # self.driver.execute_script('arguments[0].click();', btn)
 
         # for i in range(1, first_n + 1):
             # el = self.find_click(f'//li[contains(@class, "catalog-grid")][{i}]')
             # el.find_element_by_xpath('.//button[contains(@class,"compare-button")]').click()
 
-        logger.info("Added to compare")
+        logger.debug("Added to compare")
 
         self.find('//button[contains(@aria-label, "Списки")]').click()
         self.find('//a[contains(@class, "comparison")]').click()
         self.find('//button[contains(text(),"відмінності")]').click()
-        logger.info("Chose only differences")
+        logger.debug("Chose only differences")

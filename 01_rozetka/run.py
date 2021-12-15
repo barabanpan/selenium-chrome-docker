@@ -10,6 +10,7 @@ from bot.credentials import login, password
 if __name__ == "__main__":
     r_bot = ""
     driver_type = sys.argv[1] if len(sys.argv) > 1 else LOCAL_DRIVER
+    logger.debug(f"Driver: {driver_type}")
     try:
         r_bot = RozetkaBot(driver_type=driver_type)
         r_bot.driver.get("https://rozetka.com.ua/ua/")
