@@ -1,9 +1,0 @@
-aiocontextvars==0.2.2
-contextvars==2.4
-immutables==0.16
-loguru==0.5.3
-pkg_resources==0.0.0
-python-dotenv==0.19.2
-selenium==3.141.0
-typing_extensions==4.0.1
-urllib3==1.26.7
