@@ -3,14 +3,14 @@ import sys
 from loguru import logger
 
 from bot.bot import RozetkaBot
-from bot.constants import REMOTE_DRIVER, FIRST_N_PHONES
+from bot.constants import REMOTE_DRIVER, LOCAL_DRIVER, FIRST_N_PHONES
 from bot.credentials import login, password
 
 
 if __name__ == "__main__":
     r_bot = ""
     try:
-        r_bot = RozetkaBot(driver_type=sys.argv[1])
+        r_bot = RozetkaBot(driver_type=sys.argv[1] if len(sys.argv) > 1 else LOCAL_DRIVER)
         r_bot.driver.get("https://rozetka.com.ua/ua/")
         # r_bot.auth(login, password)  # captcha :(
         r_bot.open_phones()
