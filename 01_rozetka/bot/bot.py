@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import Select
+from selenium import webdriver
 
 from bot.constants import TIMEOUT
 from bot.driver.driver import get_driver
@@ -82,20 +83,13 @@ class RozetkaBot:
 
     def sort(self):
         Select(self.find('//select')).select_by_visible_text('Новинки')
-        # sleep(5)
         logger.debug("Sorted by 'Новинки'")
 
     def add_to_compare_and_click(self, first_n):
         # why doesn't it work???
-        elements = self.find_all(f'//li[contains(@class, "catalog-grid") and position()<={first_n}]')
-        for el in elements:
-            el.find_element_by_xpath('.//button[contains(@class,"compare-button")]').click()
-            # self.driver.execute_script('arguments[0].click();', btn)
-
-        # for i in range(1, first_n + 1):
-            # el = self.find_click(f'//li[contains(@class, "catalog-grid")][{i}]')
-            # el.find_element_by_xpath('.//button[contains(@class,"compare-button")]').click()
-
+        elements = self.find_all(f'//button[contains(@class,"compare-button")]')
+        for el in elements[:first_n]:
+            webdriver.ActionChains(self.driver).move_to_element(el).click(el).perform()
         logger.debug("Added to compare")
 
         self.find('//button[contains(@aria-label, "Списки")]').click()
