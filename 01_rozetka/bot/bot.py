@@ -86,9 +86,9 @@ class RozetkaBot:
         logger.debug("Sorted by 'Новинки'")
 
     def add_to_compare_and_click(self, first_n):
-        # why doesn't it work???
         elements = self.find_all(f'//button[contains(@class,"compare-button")]')
         for el in elements[:first_n]:
+            # for ElementClickInterceptedException
             webdriver.ActionChains(self.driver).move_to_element(el).click(el).perform()
         logger.debug("Added to compare")
 
