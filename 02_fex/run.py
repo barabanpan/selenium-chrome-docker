@@ -24,6 +24,6 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(repr(e))
         if driver_type == REMOTE_DRIVER:
-            r_bot.driver.quit()
+            f_bot.driver.quit()
     if driver_type == REMOTE_DRIVER:
-        r_bot.driver.quit()
+        f_bot.driver.quit()
