@@ -70,3 +70,4 @@ class PdaBot:
 
                 # return to all topics
                 self.find('//a[text()="Программы для ПК"]').click()"""
+            logger.debug(f"{i} page of topics was downloaded")
