@@ -34,8 +34,13 @@ def get_mozilla_driver(driver_type=LOCAL_DRIVER):
     firefox_options = FOptions()
     firefox_options.add_argument("--window-size=1400,800")
 
-    #firefox_profile = FirefoxProfile()
+    # 2 for custom specified folder
+    firefox_options.set_preference("browser.download.folderList", 2)
     firefox_options.set_preference("browser.download.dir", os.getcwd() + os.sep + DOWNLOAD_FOLDER)
+    # find right mime type
+    firefox_options.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/html")
+    # files are downloaded without extension, why?
+
     try:
         if driver_type == REMOTE_DRIVER:
             return webdriver.Remote("http://127.0.0.1:4444/wd/hub", options=firefox_options)
