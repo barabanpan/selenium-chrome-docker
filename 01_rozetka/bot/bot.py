@@ -9,12 +9,12 @@ from selenium.webdriver.support.ui import Select
 from selenium import webdriver
 
 from bot.constants import TIMEOUT
-from bot.driver.driver import get_driver
+from bot.driver.driver import get_chrome_driver
 
 
 class RozetkaBot:
     def __init__(self, driver_type):
-        self.driver = get_driver(driver_type)
+        self.driver = get_chrome_driver(driver_type)
         self.timeout = TIMEOUT
 
     def find(self, xpath):
@@ -54,24 +54,24 @@ class RozetkaBot:
 
     def check_boxes(self):
         # brand
-        self.find('//label[@for="OnePlus"]').click()
-        self.find('//label[@for="Samsung"]').click()
-        self.find('//label[@for="Xiaomi"]').click()
+        self.find('//a[@data-id="OnePlus"]').click()  # //label[@for="OnePlus"]
+        self.find('//a[@data-id="Samsung"]').click()
+        self.find('//a[@data-id="Xiaomi"]').click()
         logger.debug("Sorted by brands")
         # ram
-        self.find('//label[@for="8 ГБ"]').click()
-        self.find('//label[@for="12 ГБ"]').click()
+        self.find('//a[@data-id="8 ГБ"]').click()
+        self.find('//a[@data-id="12 ГБ"]').click()
         logger.debug("Sorted by RAM")
         # memory
-        self.find('//label[@for="128 ГБ"]').click()
-        self.find('//label[@for="256 ГБ"]').click()
+        self.find('//a[@data-id="128 ГБ"]').click()
+        self.find('//a[@data-id="256 ГБ"]').click()
         logger.debug("Sorted by memory")
         # screen
-        self.find('//label[contains(@for, "6.49")]').click()
-        self.find('//label[contains(@for, "6.5")]').click()
+        self.find('//a[contains(@data-id, "6.49")]').click()
+        self.find('//a[contains(@data-id, "6.5")]').click()
         logger.debug("Sorted by screen size")
         # processor
-        self.find('//label[contains(@for, "Qualcomm")]').click()
+        self.find('//a[contains(@data-id, "Qualcomm")]').click()
         logger.debug("Sorted by processor")
         # price
         self.find('//input[@formcontrolname="min"]').clear()
