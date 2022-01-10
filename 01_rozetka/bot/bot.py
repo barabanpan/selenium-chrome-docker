@@ -9,12 +9,12 @@ from selenium.webdriver.support.ui import Select
 from selenium import webdriver
 
 from bot.constants import TIMEOUT
-from bot.driver.driver import get_chrome_driver
+from bot.driver.driver import get_edge_driver as get_driver
 
 
 class RozetkaBot:
     def __init__(self, driver_type):
-        self.driver = get_chrome_driver(driver_type)
+        self.driver = get_driver(driver_type)
         self.timeout = TIMEOUT
 
     def find(self, xpath):
