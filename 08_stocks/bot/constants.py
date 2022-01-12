@@ -1,3 +1,5 @@
+import os
+
 # types of drivers for selenium
 REMOTE_DRIVER = "remote"
 LOCAL_DRIVER = "local"
@@ -6,4 +8,4 @@ LOCAL_DRIVER = "local"
 TIMEOUT = 8
 
 # csv path
-CSV_PATH = "csv/stocks_from_slickcharts.csv"
+CSV_PATH = os.sep.join(["bot", "csv", "stocks_from_slickcharts.csv"])

@@ -14,6 +14,8 @@ if __name__ == "__main__":
         bot.driver.get("https://www.slickcharts.com/sp500")
         if bot.csv_updated_more_than_week_ago():
             bot.write_505_stock_prices_to_csv()
+        bot.driver.get("https://finance.yahoo.com/")
+        bot.check_price_changes_and_write_to_list()
 
     except Exception as e:
         logger.error(repr(e))
