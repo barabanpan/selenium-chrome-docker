@@ -9,3 +9,6 @@ TIMEOUT = 8
 
 # csv path
 CSV_PATH = os.sep.join(["bot", "csv", "stocks_from_slickcharts.csv"])
+
+# email to send info to
+EMAIL_TO = "nataliia.dyshko@ukr.net"

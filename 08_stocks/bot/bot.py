@@ -13,6 +13,7 @@ import pandas as pd
 
 from bot.constants import TIMEOUT, CSV_PATH
 from bot.driver.driver import get_edge_driver as get_driver
+from bot.email import send_email
 
 
 def clean_and_to_float(string):
@@ -28,7 +29,8 @@ class StocksBot:
     def __init__(self, driver_type):
         self.driver = get_driver(driver_type)
         self.timeout = TIMEOUT
-        self.changed_prices = []
+        self.to_buy_messages = list()
+        self.to_sell_messages = list()
 
     def find(self, xpath):
         sleep(0.5)
@@ -68,6 +70,8 @@ class StocksBot:
 
     def check_price_changes_and_write_to_list(self):
         df = pd.read_csv(CSV_PATH)
+        self.to_sell_messages = list()  # empty the lists
+        self.to_buy_messages = list()
         for index, row in df.iterrows():  # generator, not list
             if index > 10:
                 break
@@ -81,7 +85,20 @@ class StocksBot:
             # new_price = clean_and_to_float(self.find('//span[@class="_11248a25 c916dce9"]').text)
             diff = get_percent_diff(old_price, new_price)
             if diff >= 1:
-                print(f'TIME TO SELL({diff})! {ticker} - was: "{old_price}", now: "{new_price}"')
+                # print(f'TIME TO SELL({diff})! {ticker} - was: "{old_price}", now: "{new_price}"')
+                self.to_sell_messages.append(f'{diff}! {ticker} - was: {old_price}, now: {new_price}')
             if diff <= -1:
-                print(f'TIME TO BUY({diff})! {ticker} - was: "{old_price}", now: "{new_price}"')
+                # print(f'TIME TO BUY({diff})! {ticker} - was: "{old_price}", now: "{new_price}"')
+                self.to_buy_messages.append(f'{diff}! {ticker} - was: {old_price}, now: {new_price}')
         logger.debug("All 505 tickers were processed")
+
+    def send_email_about_changes(self, email_to):
+        if not self.to_sell_messages and not self.to_buy_messages:
+            # no significant price changes
+            return
+
+        body = "TIME TO BUY:\n" + "\n".join(self.to_buy_messages) +\
+               "\n\nTIME TO SELL:\n" + "\n".join(self.to_sell_messages)
+        subject = "Stocks prices changed!"
+        send_email(email_to, subject, body)
+        logger.debug(f'Email send to "{email_to}"')

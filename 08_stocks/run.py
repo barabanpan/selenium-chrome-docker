@@ -3,7 +3,7 @@ import sys
 from loguru import logger
 
 from bot.bot import StocksBot
-from bot.constants import REMOTE_DRIVER, LOCAL_DRIVER
+from bot.constants import REMOTE_DRIVER, LOCAL_DRIVER, EMAIL_TO
 
 
 if __name__ == "__main__":
@@ -16,6 +16,7 @@ if __name__ == "__main__":
             bot.write_505_stock_prices_to_csv()
         bot.driver.get("https://finance.yahoo.com/")
         bot.check_price_changes_and_write_to_list()
+        bot.send_email_about_changes(EMAIL_TO)
 
     except Exception as e:
         logger.error(repr(e))
