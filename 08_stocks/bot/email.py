@@ -6,11 +6,8 @@ from dotenv import load_dotenv
 
 port = 465  # for SSL
 load_dotenv(os.path.join(os.getcwd(), '.env'))
-print(os.path.join(os.getcwd(), '.env'))
 email_sender = os.getenv("EMAIL_HOST")
 password = os.getenv("HOST_PASSWORD")
-print(email_sender)
-print(password)
 # create a secure SSL context
 context = ssl.create_default_context()
 

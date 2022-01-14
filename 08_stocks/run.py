@@ -1,9 +1,15 @@
 import sys
+import os
 
 from loguru import logger
+from dotenv import load_dotenv
 
 from bot.bot import StocksBot
 from bot.constants import REMOTE_DRIVER, LOCAL_DRIVER, EMAIL_TO
+
+
+load_dotenv(os.path.join(os.getcwd(), '.env'))
+CHAT_ID = os.getenv("CHAT_ID")
 
 
 if __name__ == "__main__":
@@ -17,6 +23,7 @@ if __name__ == "__main__":
         bot.driver.get("https://finance.yahoo.com/")
         bot.check_price_changes_and_write_to_list()
         bot.send_email_about_changes(EMAIL_TO)
+        bot.send_telegram_message_about_changes(CHAT_ID)
 
     except Exception as e:
         logger.error(repr(e))

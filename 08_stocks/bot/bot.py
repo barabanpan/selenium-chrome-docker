@@ -14,6 +14,7 @@ import pandas as pd
 from bot.constants import TIMEOUT, CSV_PATH
 from bot.driver.driver import get_edge_driver as get_driver
 from bot.email import send_email
+from bot.telegram_bot import send_message
 
 
 def clean_and_to_float(string):
@@ -101,4 +102,15 @@ class StocksBot:
                "\n\nTIME TO SELL:\n" + "\n".join(self.to_sell_messages)
         subject = "Stocks prices changed!"
         send_email(email_to, subject, body)
-        logger.debug(f'Email send to "{email_to}"')
+        logger.debug(f'Email sent to "{email_to}"')
+
+    def send_telegram_message_about_changes(self, chat_id):
+        if not self.to_sell_messages and not self.to_buy_messages:
+            # no significant price changes
+            return
+
+        message_text = "TIME TO BUY:\n" + "\n".join(self.to_buy_messages) +\
+               "\n\nTIME TO SELL:\n" + "\n".join(self.to_sell_messages)
+        send_message(chat_id, message_text)
+        logger.debug(f"Email sent to {chat_id} telegram chat")
+
