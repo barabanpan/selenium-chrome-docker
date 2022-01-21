@@ -32,6 +32,7 @@ def get_chrome_driver(driver_type=LOCAL_DRIVER):
             return webdriver.Remote("http://127.0.0.1:4444/wd/hub", options=chrome_options)
         elif driver_type == LOCAL_DRIVER:
             driver_path = chrome_driver_path[sys]
+            print(driver_path)
             return webdriver.Chrome(executable_path=driver_path, chrome_options=chrome_options)
         else:
             logger.error('Unsupported type driver!')

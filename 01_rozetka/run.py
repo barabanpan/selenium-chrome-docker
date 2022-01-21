@@ -17,7 +17,7 @@ if __name__ == "__main__":
         # r_bot.auth(login, password)  # captcha :(
         r_bot.open_phones()
         r_bot.check_boxes()
-        # r_bot.sort()
+        r_bot.sort()
         r_bot.add_to_compare_and_click(first_n=FIRST_N_PHONES)
     except Exception as e:
         logger.error(repr(e))

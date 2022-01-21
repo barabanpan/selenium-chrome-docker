@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import Select
 from selenium import webdriver
 
 from bot.constants import TIMEOUT
-from bot.driver.driver import get_edge_driver as get_driver
+from bot.driver.driver import get_chrome_driver as get_driver
 
 
 class RozetkaBot:
